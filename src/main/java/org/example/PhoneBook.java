@@ -1,7 +1,6 @@
 package org.example;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -132,7 +131,7 @@ public class PhoneBook {
             if(!phonebook.isEmpty()){
                 System.out.println("Podaj nazwę pliku. Nie dodawaj formatu .txt ");
                 String fileName = scanner.nextLine()+".txt";
-                FileWriter file = new FileWriter(fileName);
+                FileWriter file = new FileWriter(fileName); //co jeżeli plik istnieje
                 System.out.println("Trwa zapis do pliku " + fileName);
                 for(Contact element : phonebook){
                     file.write(element.getName() + " - " + element.getPhoneNumber() +"\n");
@@ -144,6 +143,20 @@ public class PhoneBook {
             }
         } catch (IOException e) {
             System.out.println("Błąd w zapisie pliku");
+        }
+    }
+
+    public void load(Scanner scanner){
+        try{
+            System.out.println("Podaj nazwę pliku.");
+            String fileName = scanner.nextLine();
+            File file = new File(fileName);
+            Scanner sc = new Scanner(file);
+            while(sc.hasNextLine()){
+                System.out.println(sc.nextLine());
+            }
+        }catch(IOException e){
+            System.out.println("Błąd ładowania pliku");
         }
     }
 }
