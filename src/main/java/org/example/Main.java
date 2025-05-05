@@ -43,12 +43,6 @@ public class Main {
                 case 5:
                     phonebook.removeContact(scanner);
                     break;
-//                case 6:
-//                    phonebook.save(scanner);
-//                    break;
-//                case 7:
-//                    phonebook.load(scanner);
-//                    break;
                 case 0:
                     System.out.println("Trwa zamykanie aplikacji...");
                     isON = false;
