@@ -126,37 +126,37 @@ public class PhoneBook {
         }
     }
 
-    public void save(Scanner scanner){
-        try {
-            if(!phonebook.isEmpty()){
-                System.out.println("Podaj nazwę pliku. Nie dodawaj formatu .txt ");
-                String fileName = scanner.nextLine()+".txt";
-                FileWriter file = new FileWriter(fileName); //co jeżeli plik istnieje
-                System.out.println("Trwa zapis do pliku " + fileName);
-                for(Contact element : phonebook){
-                    file.write(element.getName() + " - " + element.getPhoneNumber() +"\n");
-                }
-                file.close();
-                System.out.println("Kontakty pomyślnie zapisane do pliku.");
-            }else{
-                System.out.println("Lista kontaktów jest pusta. Brak zapisu do pliku.");
-            }
-        } catch (IOException e) {
-            System.out.println("Błąd w zapisie pliku");
-        }
-    }
-
-    public void load(Scanner scanner){
-        try{
-            System.out.println("Podaj nazwę pliku.");
-            String fileName = scanner.nextLine();
-            File file = new File(fileName);
-            Scanner sc = new Scanner(file);
-            while(sc.hasNextLine()){
-                System.out.println(sc.nextLine());
-            }
-        }catch(IOException e){
-            System.out.println("Błąd ładowania pliku");
-        }
-    }
+//    public void save(Scanner scanner){
+//        try {
+//            if(!phonebook.isEmpty()){
+//                System.out.println("Podaj nazwę pliku. Nie dodawaj formatu .txt ");
+//                String fileName = scanner.nextLine()+".txt";
+//                FileWriter file = new FileWriter(fileName); //co jeżeli plik istnieje
+//                System.out.println("Trwa zapis do pliku " + fileName);
+//                for(Contact element : phonebook){
+//                    file.write(element.getName() + " - " + element.getPhoneNumber() +"\n");
+//                }
+//                file.close();
+//                System.out.println("Kontakty pomyślnie zapisane do pliku.");
+//            }else{
+//                System.out.println("Lista kontaktów jest pusta. Brak zapisu do pliku.");
+//            }
+//        } catch (IOException e) {
+//            System.out.println("Błąd w zapisie pliku");
+//        }
+//    }
+//
+//    public void load(Scanner scanner){
+//        try{
+//            System.out.println("Podaj nazwę pliku.");
+//            String fileName = scanner.nextLine();
+//            File file = new File(fileName);
+//            Scanner sc = new Scanner(file);
+//            while(sc.hasNextLine()){
+//                System.out.println(sc.nextLine());
+//            }
+//        }catch(IOException e){
+//            System.out.println("Błąd ładowania pliku");
+//        }
+//    }
 }
