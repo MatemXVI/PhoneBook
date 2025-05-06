@@ -20,7 +20,38 @@ public class PhoneBook {
         return name;
     }
 
-
+    public boolean load(Scanner scanner){
+        try{
+            System.out.println("Podaj nazwę pliku.");
+            String fileName = scanner.nextLine();
+            if(fileName.equals("0")){
+                System.out.println("Nie załadowano pliku");
+                System.out.println("Możesz później zapisać dane do pliku.");
+                return true;
+            }
+            File file = new File(fileName);
+            Scanner sc = new Scanner(file);
+            boolean notEmpty = false;
+            String line;
+            String[] values;
+            phonebook.clear();
+            while(sc.hasNextLine()){
+                line = sc.nextLine();
+                values = line.split(" - ");
+                phonebook.add(new Contact(values[0], values[1]));
+                notEmpty = true;
+            }
+            if(notEmpty){
+                System.out.println("Plik " + fileName + " pomyślnie załadowany");
+            }else{
+                System.out.println("Brak kontaktów w podanym pliku");
+            }
+            return true;
+        } catch(FileNotFoundException e) {
+            System.out.println("Podany plik nie istnieje. Jeżeli chcesz przejść do programu wpisz jako nazwę pliku '0'.");
+            return false;
+        }
+    }
 
     public void addContact(Scanner scanner){
         String name = setName(scanner);
@@ -70,7 +101,6 @@ public class PhoneBook {
         }else{
             System.out.println("Lista kontaktów jest pusta.");
         }
-
     }
 
     public void editContact(Scanner scanner){
@@ -129,7 +159,8 @@ public class PhoneBook {
     public void save(Scanner scanner){
         try {
             if(!phonebook.isEmpty()){
-                System.out.println("Podaj nazwę pliku. Nie dodawaj formatu .txt ");
+
+                System.out.println("Podaj nazwę pliku. Rozszerzenie '.txt' zostanie dodane automatycznie. ");
                 String fileName = scanner.nextLine()+".txt";
                 FileWriter file = new FileWriter(fileName); //co jeżeli plik istnieje
                 System.out.println("Trwa zapis do pliku " + fileName);
@@ -143,20 +174,6 @@ public class PhoneBook {
             }
         } catch (IOException e) {
             System.out.println("Błąd w zapisie pliku");
-        }
-    }
-
-    public void load(Scanner scanner){
-        try{
-            System.out.println("Podaj nazwę pliku.");
-            String fileName = scanner.nextLine();
-            File file = new File(fileName);
-            Scanner sc = new Scanner(file);
-            while(sc.hasNextLine()){
-                System.out.println(sc.nextLine());
-            }
-        }catch(IOException e){
-            System.out.println("Błąd ładowania pliku");
         }
     }
 }

@@ -9,6 +9,12 @@ public class Main {
         PhoneBook phonebook = new PhoneBook();
         int option;
         boolean isON = true;
+        String yesOrNo;
+        System.out.println("Czy chcesz załadować kontakty z pliku '.txt'?(T/N)");
+        yesOrNo = scanner.nextLine();
+        if(yesOrNo.equalsIgnoreCase("t")){
+            while(!phonebook.load(scanner));
+        }
         while(isON){
             System.out.println("-------------KSIĄŻKA TELEFONICZNA-----------------");
             System.out.println("1. Dodaj kontakt");
@@ -17,6 +23,7 @@ public class Main {
             System.out.println("4. Edytuj kontakt");
             System.out.println("5. Usuń kontakt");
             System.out.println("6. Zapisz do pliku");
+            System.out.println("7. Załaduj inny plik.");
             System.out.println("0. Wyjdź");
             System.out.print("Wybierz opcję: ");
             try{
@@ -50,6 +57,11 @@ public class Main {
                     phonebook.load(scanner);
                     break;
                 case 0:
+                    System.out.println("Czy chcesz zapisać wprowadzone zmiany do pliku");
+                    yesOrNo = scanner.nextLine();
+                    if(yesOrNo.equalsIgnoreCase("t")){
+                        phonebook.save(scanner);
+                    }
                     System.out.println("Trwa zamykanie aplikacji...");
                     isON = false;
                     break;
