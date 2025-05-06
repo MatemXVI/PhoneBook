@@ -1,10 +1,13 @@
 package org.example;
 
+import lombok.SneakyThrows;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
 
+    @SneakyThrows
     public static void main(String[] args) {
         String applicationName = "PHONEBOOK", version = "1.0", author = "Mateusz Milczarek";
         System.out.println(applicationName);
@@ -62,24 +65,16 @@ public class Main {
                     phonebook.load(scanner);
                     break;
                 case 0:
-/*                    System.out.println("Czy chcesz zapisać wprowadzone zmiany do pliku (T/N)");
-                    yesOrNo = scanner.nextLine();
-                    if(yesOrNo.equalsIgnoreCase("T")){
-                        phonebook.save(scanner);
-                    }*/
                     System.out.println("Czy na pewno chcesz wyjść z aplikacji? (T/N)");
                     yesOrNo = scanner.nextLine();
                     if(yesOrNo.equalsIgnoreCase("T")){
                         System.out.println("Trwa zamykanie aplikacji...");
-                        try {
                             Thread.sleep(250);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
                         isON = false;
                         break;
                     }
-
+                default:
+                    System.out.println("Wybrano niepoprawną opcję!");
             }
 
         }
