@@ -4,7 +4,12 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
+        String applicationName = "PHONEBOOK", version = "1.0", author = "Mateusz Milczarek";
+        System.out.println(applicationName);
+        System.out.println("Wersja " + version + ", Autor: " + author);
+        System.out.println("Witamy w książce telefonicznej!");
         Scanner scanner = new Scanner(System.in);
         PhoneBook phonebook = new PhoneBook();
         int option;
@@ -16,7 +21,7 @@ public class Main {
             while(!phonebook.load(scanner));
         }
         while(isON){
-            System.out.println("-------------KSIĄŻKA TELEFONICZNA-----------------");
+            System.out.println("MENU");
             System.out.println("1. Dodaj kontakt");
             System.out.println("2. Wyszukaj kontakt");
             System.out.println("3. Pokaż wszystkie kontakty");
@@ -63,6 +68,11 @@ public class Main {
 //                        phonebook.save(scanner);
 //                    }
                     System.out.println("Trwa zamykanie aplikacji...");
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     isON = false;
                     break;
             }
