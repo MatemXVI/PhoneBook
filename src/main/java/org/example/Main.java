@@ -21,14 +21,14 @@ public class Main {
             while(!phonebook.load(scanner));
         }
         while(isON){
-            System.out.println("MENU");
+            System.out.println("---------------MENU---------------");
             System.out.println("1. Dodaj kontakt");
             System.out.println("2. Wyszukaj kontakt");
             System.out.println("3. Pokaż wszystkie kontakty");
             System.out.println("4. Edytuj kontakt");
             System.out.println("5. Usuń kontakt");
             System.out.println("6. Zapisz do pliku");
-            System.out.println("7. Załaduj inny plik.");
+            System.out.println("7. Załaduj inny plik");
             System.out.println("0. Wyjdź");
             System.out.print("Wybierz opcję: ");
             try{
@@ -62,19 +62,24 @@ public class Main {
                     phonebook.load(scanner);
                     break;
                 case 0:
-//                    System.out.println("Czy chcesz zapisać wprowadzone zmiany do pliku (T/N)");
-//                    yesOrNo = scanner.nextLine();
-//                    if(yesOrNo.equalsIgnoreCase("T")){
-//                        phonebook.save(scanner);
-//                    }
-                    System.out.println("Trwa zamykanie aplikacji...");
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+/*                    System.out.println("Czy chcesz zapisać wprowadzone zmiany do pliku (T/N)");
+                    yesOrNo = scanner.nextLine();
+                    if(yesOrNo.equalsIgnoreCase("T")){
+                        phonebook.save(scanner);
+                    }*/
+                    System.out.println("Czy na pewno chcesz wyjść z aplikacji? (T/N)");
+                    yesOrNo = scanner.nextLine();
+                    if(yesOrNo.equalsIgnoreCase("T")){
+                        System.out.println("Trwa zamykanie aplikacji...");
+                        try {
+                            Thread.sleep(250);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        isON = false;
+                        break;
                     }
-                    isON = false;
-                    break;
+
             }
 
         }
