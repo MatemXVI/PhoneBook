@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PhoneBook {
-    ArrayList<Contact> phonebook = new ArrayList<>();
+    private ArrayList<Contact> phonebook = new ArrayList<>();
     private String currentFileName = null;
 
     String regex = "^\\d{9}$";
