@@ -57,9 +57,9 @@ public class Main {
                     phonebook.load(scanner);
                     break;
                 case 0:
-                    System.out.println("Czy chcesz zapisać wprowadzone zmiany do pliku");
+                    System.out.println("Czy chcesz zapisać wprowadzone zmiany do pliku (T/N)");
                     yesOrNo = scanner.nextLine();
-                    if(yesOrNo.equalsIgnoreCase("t")){
+                    if(yesOrNo.equalsIgnoreCase("T")){
                         phonebook.save(scanner);
                     }
                     System.out.println("Trwa zamykanie aplikacji...");

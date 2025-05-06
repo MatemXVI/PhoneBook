@@ -159,10 +159,18 @@ public class PhoneBook {
     public void save(Scanner scanner){
         try {
             if(!phonebook.isEmpty()){
-
                 System.out.println("Podaj nazwę pliku. Rozszerzenie '.txt' zostanie dodane automatycznie. ");
                 String fileName = scanner.nextLine()+".txt";
-                FileWriter file = new FileWriter(fileName); //co jeżeli plik istnieje
+                FileWriter file = new FileWriter(fileName);
+                File f = new File(fileName);
+                if (f.exists()) {
+                    System.out.println("Plik już istnieje. Czy chcesz go nadpisać? (T/N)");
+                    String choice = scanner.nextLine();
+                    if (!choice.equalsIgnoreCase("T")) {
+                        System.out.println("Zapis anulowany.");
+                        return;
+                    }
+                }
                 System.out.println("Trwa zapis do pliku " + fileName);
                 for(Contact element : phonebook){
                     file.write(element.getName() + " - " + element.getPhoneNumber() +"\n");
