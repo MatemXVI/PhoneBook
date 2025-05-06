@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Contact {
-    String name;
-    String phoneNumber;
+    private String name;
+    private String phoneNumber;
 }
 

@@ -2,12 +2,13 @@ package org.example;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PhoneBook {
-    ArrayList<Contact> phonebook = new ArrayList<>();
+    private final List<Contact> phonebook = new ArrayList<>();
     private String currentFileName = null;
 
     String regex = "^\\d{9}$";

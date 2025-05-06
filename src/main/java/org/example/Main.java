@@ -1,10 +1,13 @@
 package org.example;
 
+import lombok.SneakyThrows;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
 
+    @SneakyThrows
     public static void main(String[] args) {
         String applicationName = "PHONEBOOK", version = "1.0", author = "Mateusz Milczarek";
         System.out.println(applicationName);
@@ -66,11 +69,7 @@ public class Main {
                     yesOrNo = scanner.nextLine();
                     if(yesOrNo.equalsIgnoreCase("T")){
                         System.out.println("Trwa zamykanie aplikacji...");
-                        try {
-                            Thread.sleep(250);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
+                        Thread.sleep(250);
                         isON = false;
                         break;
                     }
