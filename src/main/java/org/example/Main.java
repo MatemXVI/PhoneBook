@@ -10,7 +10,7 @@ public class Main {
         int option;
         boolean isON = true;
         String yesOrNo;
-        System.out.println("Czy chcesz załadować kontakty z pliku '.txt'?(T/N)");
+        System.out.println("Czy chcesz załadować kontakty z pliku '.txt'? (T/N)");
         yesOrNo = scanner.nextLine();
         if(yesOrNo.equalsIgnoreCase("t")){
             while(!phonebook.load(scanner));
@@ -57,11 +57,11 @@ public class Main {
                     phonebook.load(scanner);
                     break;
                 case 0:
-                    System.out.println("Czy chcesz zapisać wprowadzone zmiany do pliku (T/N)");
-                    yesOrNo = scanner.nextLine();
-                    if(yesOrNo.equalsIgnoreCase("T")){
-                        phonebook.save(scanner);
-                    }
+//                    System.out.println("Czy chcesz zapisać wprowadzone zmiany do pliku (T/N)");
+//                    yesOrNo = scanner.nextLine();
+//                    if(yesOrNo.equalsIgnoreCase("T")){
+//                        phonebook.save(scanner);
+//                    }
                     System.out.println("Trwa zamykanie aplikacji...");
                     isON = false;
                     break;

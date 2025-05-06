@@ -8,9 +8,14 @@ import java.util.regex.Pattern;
 
 public class PhoneBook {
     ArrayList<Contact> phonebook = new ArrayList<>();
+    private String currentFileName = null;
 
     String regex = "^\\d{9}$";
     Pattern pattern = Pattern.compile(regex);
+
+    private void separator(){
+        System.out.println();
+    }
 
     private String setName(Scanner scanner){
         System.out.print("Podaj imię: ");
@@ -41,6 +46,7 @@ public class PhoneBook {
                 phonebook.add(new Contact(values[0], values[1]));
                 notEmpty = true;
             }
+            currentFileName = fileName;
             if(notEmpty){
                 System.out.println("Plik " + fileName + " pomyślnie załadowany");
             }else{
@@ -58,6 +64,7 @@ public class PhoneBook {
         for(Contact element : phonebook){
             if(element.getName().equalsIgnoreCase(name)){
                 System.out.println("Kontakt o tej nazwie już istnieje. Możesz edytować numer telefonu tego kontaktu.");
+                separator();
                 return;
             }
         }
@@ -66,12 +73,14 @@ public class PhoneBook {
         Matcher matcher = pattern.matcher(phoneNumber);
         if(!matcher.matches()){
             System.out.println("Format numeru telefonu jest niepoprawny. Numer musi się tylko i wyłącznie z 9 cyfr!");
+            separator();
             return;
         }
         if(phonebook.add(new Contact(name, phoneNumber)))
             System.out.println("Kontakt został dodany pomyślnie");
         else
             System.out.println("Wystąpił błąd w dodawaniu kontaktu.");
+        separator();
     }
 
     public void findContactByName(Scanner scanner){
@@ -90,6 +99,7 @@ public class PhoneBook {
         }else{
             System.out.println("Lista kontaktów jest pusta.");
         }
+        separator();
     }
 
     public void printAllContacts(){
@@ -101,6 +111,7 @@ public class PhoneBook {
         }else{
             System.out.println("Lista kontaktów jest pusta.");
         }
+        separator();
     }
 
     public void editContact(Scanner scanner){
@@ -133,6 +144,7 @@ public class PhoneBook {
         }else{
             System.out.println("Lista kontaktów jest pusta.");
         }
+        separator();
     }
 
     public void removeContact(Scanner scanner){
@@ -154,23 +166,37 @@ public class PhoneBook {
         }else{
             System.out.println("Lista kontaktów jest pusta.");
         }
+        separator();
     }
 
     public void save(Scanner scanner){
         try {
             if(!phonebook.isEmpty()){
-                System.out.println("Podaj nazwę pliku. Rozszerzenie '.txt' zostanie dodane automatycznie. ");
-                String fileName = scanner.nextLine()+".txt";
-                FileWriter file = new FileWriter(fileName);
+                String choice, fileName;
+                if(currentFileName != null){
+                    System.out.println("Czy chcesz zapisać dane do obecnie załadowanego pliku " + currentFileName + "?(T/N)");
+                    choice = scanner.nextLine();
+                    if(choice.equalsIgnoreCase("T")){
+                        fileName = currentFileName;
+                    }else{
+                        System.out.println("Podaj nazwę pliku. Rozszerzenie '.txt' zostanie dodane automatycznie. ");
+                        fileName = scanner.nextLine()+".txt";
+                    }
+                }else{
+                    System.out.println("Podaj nazwę pliku. Rozszerzenie '.txt' zostanie dodane automatycznie. ");
+                    fileName = scanner.nextLine()+".txt";
+                }
                 File f = new File(fileName);
-                if (f.exists()) {
+                if (f.exists() && !currentFileName.equals(fileName)) {
                     System.out.println("Plik już istnieje. Czy chcesz go nadpisać? (T/N)");
-                    String choice = scanner.nextLine();
+                    choice = scanner.nextLine();
                     if (!choice.equalsIgnoreCase("T")) {
                         System.out.println("Zapis anulowany.");
+                        separator();
                         return;
                     }
                 }
+                FileWriter file = new FileWriter(fileName);
                 System.out.println("Trwa zapis do pliku " + fileName);
                 for(Contact element : phonebook){
                     file.write(element.getName() + " - " + element.getPhoneNumber() +"\n");
@@ -183,5 +209,6 @@ public class PhoneBook {
         } catch (IOException e) {
             System.out.println("Błąd w zapisie pliku");
         }
+        separator();
     }
 }
