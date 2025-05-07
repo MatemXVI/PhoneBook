@@ -1,14 +1,16 @@
 package org.example;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@AllArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Contact {
+    private int id;
+    @NonNull
     private String name;
+    @NonNull
     private String phoneNumber;
 }
 
