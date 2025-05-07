@@ -37,11 +37,6 @@ public class PhoneBook {
     public boolean connect(){
         String nazwa, telefon;
         int id;
-        try {
-            Class.forName("org.h2.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
         try (Connection conn = getConnection()) {
             String sqlSelect = "SELECT * FROM kontakty";
             Statement statement = conn.createStatement();
