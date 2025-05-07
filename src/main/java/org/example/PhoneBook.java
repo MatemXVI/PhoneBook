@@ -9,8 +9,9 @@ import java.util.regex.Pattern;
 
 public class PhoneBook {
     private final List<Contact> phonebook = new ArrayList<>();
-    private final String URL = "jdbc:mysql://localhost:3306/ksiazka_telefoniczna";
-    private final String USER = "root";
+//    private final String URL = "jdbc:mysql://localhost:3306/ksiazka_telefoniczna";
+    private final String URL = "jdbc:h2:~/ksiazka_telefoniczna";
+    private final String USER = "sa";
     private final String PASSWORD = "";
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
@@ -31,9 +32,16 @@ public class PhoneBook {
         return name;
     }
 
+
+    //6. Aktualizuj dane;,5,4,2,1
     public boolean connect(){
         String nazwa, telefon;
         int id;
+        try {
+            Class.forName("org.h2.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         try (Connection conn = getConnection()) {
             String sqlSelect = "SELECT * FROM kontakty";
             Statement statement = conn.createStatement();
@@ -48,6 +56,8 @@ public class PhoneBook {
             conn.close();
             return true;
         } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -91,7 +101,7 @@ public class PhoneBook {
         }
     }
 
-
+//1. Dodaj kontakt
     public void addContact(Scanner scanner) {
         String name = setName(scanner);
         for (Contact element : phonebook) {
@@ -115,6 +125,7 @@ public class PhoneBook {
         separator();
     }
 
+    //2. Wyszukaj kontakt
     public void findContactByName(Scanner scanner) {
         boolean found = false;
         if (!phonebook.isEmpty()) {
@@ -133,7 +144,7 @@ public class PhoneBook {
         }
         separator();
     }
-
+    //3. Pokaż wszystkie kontakty
     public void printAllContacts() {
         if (!phonebook.isEmpty()) {
             System.out.println("Lista wszystkich kontaktów: ");
@@ -145,7 +156,7 @@ public class PhoneBook {
         }
         separator();
     }
-
+    //4. Edytuj kontakt
     public void editContact(Scanner scanner) {
         if (!phonebook.isEmpty()) {
             System.out.println("Podaj kontakt który chcesz edytować");
@@ -179,21 +190,26 @@ public class PhoneBook {
         }
         separator();
     }
-
+//   5. Edytuj kontakt
     public void removeContact(Scanner scanner) {
         if (!phonebook.isEmpty()) {
             System.out.println("Podaj kontakt który chcesz usunąć");
             String name = setName(scanner);
             boolean found = false;
-            for (int i = 0; i < phonebook.size(); i++) {
-                if (phonebook.get(i).getName().equalsIgnoreCase(name)) {
-                    found = true;
-                    deleteToDb(phonebook.get(i).getId());
-                    phonebook.remove(i);
-                    System.out.println("Kontakt usunięty.");
-                    break;
+            try{
+                for (int i = 0; i < phonebook.size(); i++) {
+                    if (phonebook.get(i).getName().equalsIgnoreCase(name)) {
+                        found = true;
+                        deleteToDb(phonebook.get(i).getId());
+                        phonebook.remove(i);
+                        System.out.println("Kontakt usunięty.");
+                        break;
+                    }
                 }
+            }catch(IndexOutOfBoundsException e){
+                System.out.println("Usunięto ostatni indeks z bazy.");
             }
+
             if (!found) {
                 System.out.println("Nie znaleziono kontaktu");
             }
