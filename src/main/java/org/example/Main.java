@@ -19,7 +19,7 @@ public class Main {
         boolean isON = true;
         String yesOrNo;
         if (!phonebook.connect()){
-            System.out.println("Błąd połączenia z bazą danych! Jeżeli chcesz ponownie załadować, naciśnij 7.");
+            System.out.println("Błąd połączenia z bazą danych! Jeżeli chcesz ponownie załadować, naciśnij 6.");
         }
         while(isON){
             System.out.println("---------------MENU---------------");
@@ -28,8 +28,7 @@ public class Main {
             System.out.println("3. Pokaż wszystkie kontakty");
             System.out.println("4. Edytuj kontakt");
             System.out.println("5. Usuń kontakt");
-            System.out.println("6. Zapisz do pliku"); //Zapisz [do bazy]
-            System.out.println("7. Aktualizuj dane"); // usunąć
+            System.out.println("6. Aktualizuj dane"); // usunąć
             System.out.println("0. Wyjdź");
             System.out.print("Wybierz opcję: ");
             try{
@@ -56,10 +55,7 @@ public class Main {
                 case 5:
                     phonebook.removeContact(scanner);
                     break;
-//                case 6:
-//                    phonebook.saveToDb();
-//                    break;
-                case 7:
+                case 6:
                     if (!phonebook.connect()){
                         System.out.println("Błąd połączenia z bazą danych! Jeżeli chcesz ponownie załadować, naciśnij 7.");
                     }

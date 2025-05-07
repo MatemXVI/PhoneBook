@@ -12,7 +12,9 @@ public class PhoneBook {
     private final String URL = "jdbc:mysql://localhost:3306/ksiazka_telefoniczna";
     private final String USER = "root";
     private final String PASSWORD = "";
-    //    private String currentFileName = null;
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
 
     String regex = "^\\d{9}$";
     Pattern pattern = Pattern.compile(regex);
@@ -32,11 +34,11 @@ public class PhoneBook {
     public boolean connect(){
         String nazwa, telefon;
         int id;
-        try {
+        try (Connection conn = getConnection()) {
             String sqlSelect = "SELECT * FROM kontakty";
-            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery(sqlSelect);
+            phonebook.clear();
             while(result.next()){
                 id = result.getInt("id");
                 nazwa = result.getString("nazwa");
@@ -51,88 +53,44 @@ public class PhoneBook {
     }
 
     public void saveToDb(String name, String phoneNumber){
-        try {
+        try (Connection conn = getConnection()) {
             String sql = "INSERT INTO `kontakty`(`nazwa`, `telefon`) VALUES ('" + name + "','" + phoneNumber + "')";
-            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
             Statement statement = conn.createStatement();
             statement.executeUpdate(sql);
             conn.close();
+            connect();
         } catch (SQLException e) {
             System.out.println("Wystąpił błąd przy usuwaniu z bazy danych.");
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
         }
     }
 
-    public boolean selectOneRow(int id){
-        try {
-            String sqlSelect = "SELECT * FROM kontakty WHERE id = " + id;
-            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+    public void editToDb(String name, String phoneNumber){
+        try (Connection conn = getConnection()) {
             Statement statement = conn.createStatement();
-            ResultSet result = statement.executeQuery(sqlSelect);
-            if(result.getRow() < 0)
-                return false;
-            return true;
+            String sql = "UPDATE kontakty SET telefon = '" + phoneNumber + "' WHERE nazwa = '" + name + "'";
+            statement.executeUpdate(sql);
+            conn.close();
+            connect();
         } catch (SQLException e) {
-            System.out.println("Wystąpił błąd.");
-            return false;
+            System.out.println("Wystąpił błąd przy edycji bazy danych.");
+//            throw new RuntimeException(e);
         }
     }
 
-    public boolean deleteToDb(int id){
-        try {
-            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+    public void deleteToDb(int id){
+        try (Connection conn = getConnection()) {
             Statement statement = conn.createStatement();
-            String sqlSelect = "SELECT * FROM kontakty WHERE id = " + id;
-            ResultSet result = statement.executeQuery(sqlSelect);
-            if(result.getRow() > 0){
-                String sql = "DELETE * FROM kontakty WHERE id = " + id;
-                statement.executeUpdate(sql);
-                conn.close();
-                return true;
-            }else{
-                System.out.println("Brak danych do usunięcia");
-                conn.close();
-                return false;
-            }
+            String sql = "DELETE FROM kontakty WHERE id = " + id;
+            statement.executeUpdate(sql);
+            conn.close();
+            connect();
         } catch (SQLException e) {
             System.out.println("Wystąpił błąd przy usuwaniu z bazy danych.");
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
         }
     }
 
-//    public boolean load(Scanner scanner) {
-//        try {
-//            System.out.println("Podaj nazwę pliku.");
-//            String fileName = scanner.nextLine();
-//            if (fileName.equals("0")) {
-//                System.out.println("Nie załadowano pliku");
-//                System.out.println("Możesz później zapisać dane do pliku.");
-//                return true;
-//            }
-//            File file = new File(fileName);
-//            Scanner sc = new Scanner(file);
-//            boolean notEmpty = false;
-//            String line;
-//            String[] values;
-//            phonebook.clear();
-//            while (sc.hasNextLine()) {
-//                line = sc.nextLine();
-//                values = line.split(" - ");
-//                phonebook.add(new Contact(values[0], values[1]));
-//                notEmpty = true;
-//            }
-//            currentFileName = fileName;
-//            if (notEmpty) {
-//                System.out.println("Plik " + fileName + " pomyślnie załadowany");
-//            } else {
-//                System.out.println("Brak kontaktów w podanym pliku");
-//            }
-//            return true;
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Podany plik nie istnieje. Jeżeli chcesz przejść do programu wpisz jako nazwę pliku '0'.");
-//            return false;
-//        }
-//    }
 
     public void addContact(Scanner scanner) {
         String name = setName(scanner);
@@ -204,6 +162,7 @@ public class PhoneBook {
                         if (!matcher.matches()) {
                             System.out.println("Nowy numer nie został zapisany. Numer musi składać się z 9 cyfr.");
                         } else {
+                            editToDb(name, phoneNumber);
                             element.setPhoneNumber(phoneNumber);
                             System.out.println("Edycja przebiegła pomyślnie");
                         }
@@ -229,6 +188,7 @@ public class PhoneBook {
             for (int i = 0; i < phonebook.size(); i++) {
                 if (phonebook.get(i).getName().equalsIgnoreCase(name)) {
                     found = true;
+                    deleteToDb(phonebook.get(i).getId());
                     phonebook.remove(i);
                     System.out.println("Kontakt usunięty.");
                     break;
@@ -243,46 +203,4 @@ public class PhoneBook {
         separator();
     }
 
-//    public void save(Scanner scanner) {
-//        try {
-//            if (!phonebook.isEmpty()) {
-//                String choice, fileName;
-//                if (currentFileName != null) {
-//                    System.out.println("Czy chcesz zapisać dane do obecnie załadowanego pliku " + currentFileName + "?(T/N)");
-//                    choice = scanner.nextLine();
-//                    if (choice.equalsIgnoreCase("T")) {
-//                        fileName = currentFileName;
-//                    } else {
-//                        System.out.println("Podaj nazwę pliku. Rozszerzenie '.txt' zostanie dodane automatycznie. ");
-//                        fileName = scanner.nextLine() + ".txt";
-//                    }
-//                } else {
-//                    System.out.println("Podaj nazwę pliku. Rozszerzenie '.txt' zostanie dodane automatycznie. ");
-//                    fileName = scanner.nextLine() + ".txt";
-//                }
-//                File f = new File(fileName);
-//                if (f.exists() && !currentFileName.equals(fileName)) {
-//                    System.out.println("Plik już istnieje. Czy chcesz go nadpisać? (T/N)");
-//                    choice = scanner.nextLine();
-//                    if (!choice.equalsIgnoreCase("T")) {
-//                        System.out.println("Zapis anulowany.");
-//                        separator();
-//                        return;
-//                    }
-//                }
-//                FileWriter file = new FileWriter(fileName);
-//                System.out.println("Trwa zapis do pliku " + fileName);
-//                for (Contact element : phonebook) {
-//                    file.write(element.getName() + " - " + element.getPhoneNumber() + "\n");
-//                }
-//                file.close();
-//                System.out.println("Kontakty pomyślnie zapisane do pliku.");
-//            } else {
-//                System.out.println("Lista kontaktów jest pusta. Brak zapisu do pliku.");
-//            }
-//        } catch (IOException e) {
-//            System.out.println("Błąd w zapisie pliku");
-//        }
-//        separator();
-//    }
 }
